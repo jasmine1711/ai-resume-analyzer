@@ -40,29 +40,29 @@ const Auth = () => {
     <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
       <div className="gradient-border shadow-lg">
         <section className="flex flex-col gap-8 bg-white rounded-2xl p-10 w-[400px] max-w-[90vw]">
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-bold">Welcome</h1>
             <h2 className="text-gray-600">
               Log In to Continue Your Job Journey
             </h2>
           </div>
 
-          {/* Centered login/logout button */}
-          <div className="flex items-center justify-center w-full mt-4">
-  {isLoading ? (
-    <button className="auth-button animate-pulse" disabled>
-      <p>Signing you in...</p>
-    </button>
-  ) : auth.isAuthenticated ? (
-    <button className="auth-button" onClick={handleLogout}>
-      <p>Log Out</p>
-    </button>
-  ) : (
-    <button className="auth-button" onClick={handleLogin}>
-      <p>Log In</p>
-    </button>
-  )}
-</div>
+          {/* Center only the login/logout button */}
+          <div className="flex justify-center">
+            {isLoading ? (
+              <button className="auth-button animate-pulse" disabled>
+                <p>Signing you in...</p>
+              </button>
+            ) : auth.isAuthenticated ? (
+              <button className="auth-button" onClick={handleLogout}>
+                <p>Log Out</p>
+              </button>
+            ) : (
+              <button className="auth-button" onClick={handleLogin}>
+                <p>Log In</p>
+              </button>
+            )}
+          </div>
 
         </section>
       </div>

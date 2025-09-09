@@ -3,8 +3,8 @@ import type { Route } from "./+types/home";
 import ResumeCard from "~/components/ResumeCard";
 import { resumes } from "../../constants";
 import { usePuterStore } from "~/lib/puter";
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -14,13 +14,12 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-const { auth } = usePuterStore();
-const navigate = useNavigate();
+  const { auth } = usePuterStore();
+  const navigate = useNavigate();
 
-useEffect(  () =>  {
-if(!auth.isAuthenticated) navigate('/auth?next=/');
-},  [auth.isAuthenticated])
-
+  useEffect(() => {
+    if (!auth.isAuthenticated) navigate('/auth?next=/');
+  }, [auth.isAuthenticated, navigate]);
 
   return (
     <main className="bg-[url('/images/bg-main.svg')] bg-cover">
