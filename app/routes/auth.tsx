@@ -13,35 +13,33 @@ const Auth = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Determine next page after login (default: /home)
+  // Determine next page after login (default: /)
   const next = location.search.includes("next=")
     ? decodeURIComponent(location.search.split("next=")[1])
-    : "/home";
+    : "/";
 
-  // Redirect after Puter login only (when auth.isAuthenticated changes)
+  // Redirect after Puter login only
   useEffect(() => {
     if (auth.isAuthenticated) {
-      navigate(next); // only redirect if logged in
+      navigate(next);
     }
   }, [auth.isAuthenticated, next, navigate]);
 
-  // Opens Puter embedded popup-style login full screen
+  // Full-page embedded login
   const handleLogin = () => {
     const redirectUrl = encodeURIComponent(window.location.origin + next);
-
-    // Full-page embedded login; user selects account → signs in/signup → redirects to next
     window.location.href = `https://puter.com/action/sign-in?embedded_in_popup=true&msg_id=1&redirect=${redirectUrl}`;
   };
 
   const handleLogout = () => {
     auth.signOut();
-    navigate("/auth"); // stay on auth page after logout
+    navigate("/auth");
   };
 
   return (
     <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
       <div className="gradient-border shadow-lg">
-        <section className="flex flex-col gap-8 bg-white rounded-2xl p-10">
+        <section className="flex flex-col gap-8 bg-white rounded-2xl p-10 w-[400px] max-w-[90vw]">
           <div className="flex flex-col items-center gap-2 text-center">
             <h1 className="text-2xl font-bold">Welcome</h1>
             <h2 className="text-gray-600">
@@ -49,23 +47,20 @@ const Auth = () => {
             </h2>
           </div>
 
-          <div>
+          {/* Centered login/logout button */}
+          <div className="flex justify-center">
             {isLoading ? (
               <button className="auth-button animate-pulse" disabled>
                 <p>Signing you in...</p>
               </button>
+            ) : auth.isAuthenticated ? (
+              <button className="auth-button" onClick={handleLogout}>
+                <p>Log Out</p>
+              </button>
             ) : (
-              <>
-                {auth.isAuthenticated ? (
-                  <button className="auth-button" onClick={handleLogout}>
-                    <p>Log Out</p>
-                  </button>
-                ) : (
-                  <button className="auth-button" onClick={handleLogin}>
-                    <p>Log In</p>
-                  </button>
-                )}
-              </>
+              <button className="auth-button" onClick={handleLogin}>
+                <p>Log In</p>
+              </button>
             )}
           </div>
         </section>
