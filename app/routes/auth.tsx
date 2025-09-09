@@ -13,19 +13,17 @@ const Auth = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Determine next page after login (default: /)
+  // Default redirect after login
   const next = location.search.includes("next=")
     ? decodeURIComponent(location.search.split("next=")[1])
     : "/";
-
-  // Redirect after Puter login only
+  // Redirect only when authenticated
   useEffect(() => {
     if (auth.isAuthenticated) {
-      navigate(next);
+      navigate(next, { replace: true }); // replace avoids blinking in history
     }
   }, [auth.isAuthenticated, next, navigate]);
 
-  // Full-page embedded login
   const handleLogin = () => {
     const redirectUrl = encodeURIComponent(window.location.origin + next);
     window.location.href = `https://puter.com/action/sign-in?embedded_in_popup=true&msg_id=1&redirect=${redirectUrl}`;
@@ -33,21 +31,23 @@ const Auth = () => {
 
   const handleLogout = () => {
     auth.signOut();
-    navigate("/auth");
+    navigate("/auth", { replace: true });
   };
 
   return (
     <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
       <div className="gradient-border shadow-lg">
-        <section className="flex flex-col gap-8 bg-white rounded-2xl p-10 w-[400px] max-w-[90vw]">
+        <section className="flex flex-col gap-8 bg-white rounded-2xl p-10 ">
+          
+          {/* Text stays left-aligned */}
           <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-bold">Welcome</h1>
-            <h2 className="text-gray-600">
+            <h1 className="text-2xl font-bold ">Welcome</h1>
+            <h2 className="text-gray-600 ">
               Log In to Continue Your Job Journey
             </h2>
           </div>
 
-          {/* Center only the login/logout button */}
+          {/* Only the button is centered */}
           <div className="flex justify-center">
             {isLoading ? (
               <button className="auth-button animate-pulse" disabled>
